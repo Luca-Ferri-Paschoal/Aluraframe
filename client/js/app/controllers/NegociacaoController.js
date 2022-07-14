@@ -13,9 +13,14 @@ class NegociacaoController {
         this.#inputData = pega('#data');
         this.#inputQuantidade = pega('#quantidade');
         this.#inputValor = pega('#valor');
-
-        this.#listaNegociacoes = new ListaNegociacoes();
+        
         this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
+
+        this.#listaNegociacoes = new ListaNegociacoes(this,function (model) {
+            
+            this.negociacoesView.update(this.listaNegociacoes);
+        });
+
         this.#negociacoesView.update(this.#listaNegociacoes);
 
         this.#mensagem = new Mensagem();
@@ -23,12 +28,19 @@ class NegociacaoController {
         this.#mensagemView.update(this.#mensagem);
     }
 
+    get negociacoesView() {
+        return this.#negociacoesView;
+    }
+
+    get listaNegociacoes() {
+        return this.#listaNegociacoes;
+    }
+
     adiciona(event) {
         event.preventDefault();
 
         const negociacao = this.#criaNegociacao();
         this.#listaNegociacoes.adiciona(negociacao);
-        this.#negociacoesView.update(this.#listaNegociacoes);
 
         this.#mensagem.texto = 'Negociação adcionada com sucesso.';
         this.#mensagemView.update(this.#mensagem);
@@ -38,7 +50,6 @@ class NegociacaoController {
 
     apaga() {
         this.#listaNegociacoes.esvazia();
-        this.#negociacoesView.update(this.#listaNegociacoes);
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
         this.#mensagemView.update(this.#mensagem);
     }
