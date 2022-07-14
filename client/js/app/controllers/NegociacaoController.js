@@ -16,10 +16,7 @@ class NegociacaoController {
         
         this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
 
-        this.#listaNegociacoes = new ListaNegociacoes(this,function (model) {
-            
-            this.negociacoesView.update(this.listaNegociacoes);
-        });
+        this.#listaNegociacoes = new ListaNegociacoes(model => this.negociacoesView.update(this.listaNegociacoes));
 
         this.#negociacoesView.update(this.#listaNegociacoes);
 
