@@ -16,7 +16,23 @@ class NegociacaoController {
         
         this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
 
-        this.#listaNegociacoes = new ListaNegociacoes(model => this.negociacoesView.update(this.listaNegociacoes));
+        let self = this;
+
+        this.#listaNegociacoes = new Proxy(new ListaNegociacoes(), {
+            get(target, prop, receiver) {
+                
+                if(['adiciona', 'esvazia'].includes(prop) && typeof(target[prop]) === typeof(Function)) {
+
+                    return function() {
+                        Reflect.apply(target[prop], target, arguments);
+                        
+                        self.#negociacoesView.update(target);
+                    }
+                }
+
+                return Reflect.get(target, prop);
+            }
+        });
 
         this.#negociacoesView.update(this.#listaNegociacoes);
 
