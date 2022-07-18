@@ -15,29 +15,23 @@ class NegociacaoController {
         this.#inputValor = pega('#valor');
         
         this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
+        this.#mensagemView = new MensagemView(pega('#mensagemView'));
 
-        let self = this;
+        
+        this.#listaNegociacoes = ProxyFactory.create(
+            new ListaNegociacoes(),
+            ['adiciona', 'esvazia'],
+            model => this.#negociacoesView.update(model),
+        );
 
-        this.#listaNegociacoes = new Proxy(new ListaNegociacoes(), {
-            get(target, prop, receiver) {
-                
-                if(['adiciona', 'esvazia'].includes(prop) && typeof(target[prop]) === typeof(Function)) {
-
-                    return function() {
-                        Reflect.apply(target[prop], target, arguments);
-                        
-                        self.#negociacoesView.update(target);
-                    }
-                }
-
-                return Reflect.get(target, prop);
-            }
-        });
+        
+        this.#mensagem = ProxyFactory.create(
+            new Mensagem(),
+            ['texto'],
+            model => this.#mensagemView.update(model),
+        );
 
         this.#negociacoesView.update(this.#listaNegociacoes);
-
-        this.#mensagem = new Mensagem();
-        this.#mensagemView = new MensagemView(pega('#mensagemView'));
         this.#mensagemView.update(this.#mensagem);
     }
 
@@ -53,10 +47,9 @@ class NegociacaoController {
         event.preventDefault();
 
         const negociacao = this.#criaNegociacao();
-        this.#listaNegociacoes.adiciona(negociacao);
 
+        this.#listaNegociacoes.adiciona(negociacao);
         this.#mensagem.texto = 'Negociação adcionada com sucesso.';
-        this.#mensagemView.update(this.#mensagem);
         
         this.#limpaCampos();
     }
@@ -64,7 +57,6 @@ class NegociacaoController {
     apaga() {
         this.#listaNegociacoes.esvazia();
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
-        this.#mensagemView.update(this.#mensagem);
     }
 
     #criaNegociacao () {
