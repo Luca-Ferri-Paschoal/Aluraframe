@@ -17,7 +17,7 @@ class NegociacaoController {
             new NegociacoesView(pega('#negociacoesView')),
             'adiciona', 'esvazia',
         )
-        
+
         this.#mensagem = new Bind(
             new Mensagem(),
             new MensagemView(pega('#mensagemView')),
@@ -32,8 +32,39 @@ class NegociacaoController {
 
         this.#listaNegociacoes.adiciona(negociacao);
         this.#mensagem.texto = 'Negociação adcionada com sucesso.';
-        
+
         this.#limpaCampos();
+    }
+
+    importaNegociacoes() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'negociacoes/semana');
+
+        xhr.onreadystatechange = () => {
+
+            if(xhr.readyState === 4) {
+                if(xhr.status === 200) {
+                    JSON.parse(xhr.responseText).map(objeto => 
+                        new Negociacao(
+                            new Date(objeto.data),
+                            objeto.quantidade,
+                            objeto.valor,
+                        )
+                    ).forEach(negociacao => this.#listaNegociacoes.adiciona(negociacao));
+
+                    this.#mensagem.texto = 'Negociações importadas com sucesso.';
+
+                } else {
+                    console.log(xhr.responseText);
+                    this.#mensagem.texto = 'Não foi possível obter as negociações do servidor.';
+                }
+            }
+
+        }
+
+        xhr.send();
+
     }
 
     apagaLista() {
@@ -41,7 +72,7 @@ class NegociacaoController {
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
     }
 
-    #criaNegociacao () {
+    #criaNegociacao() {
         return new Negociacao(
             DateHelper.textoParaData(this.#inputData.value),
             this.#inputQuantidade.value,
@@ -51,12 +82,11 @@ class NegociacaoController {
 
     #limpaCampos() {
         let zero = 0;
-        
+
         this.#inputData.value = '';
         this.#inputQuantidade.value = 1;
         this.#inputValor.value = zero.toFixed(1);
 
         this.#inputData.focus();
     }
-
 }
