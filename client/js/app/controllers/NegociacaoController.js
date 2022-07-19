@@ -3,9 +3,7 @@ class NegociacaoController {
     #inputQuantidade;
     #inputValor;
     #listaNegociacoes;
-    #negociacoesView;
     #mensagem;
-    #mensagemView;
 
     constructor() {
         const pega = document.querySelector.bind(document);
@@ -13,29 +11,18 @@ class NegociacaoController {
         this.#inputData = pega('#data');
         this.#inputQuantidade = pega('#quantidade');
         this.#inputValor = pega('#valor');
-        
-        this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
-        this.#mensagemView = new MensagemView(pega('#mensagemView'));
 
         this.#listaNegociacoes = new Bind(
             new ListaNegociacoes(),
-            this.#negociacoesView,
-            ['adiciona', 'esvazia'],
+            new NegociacoesView(pega('#negociacoesView')),
+            'adiciona', 'esvazia',
         )
         
         this.#mensagem = new Bind(
             new Mensagem(),
-            this.#mensagemView,
-            ['texto'],
+            new MensagemView(pega('#mensagemView')),
+            'texto',
         );
-    }
-
-    get negociacoesView() {
-        return this.#negociacoesView;
-    }
-
-    get listaNegociacoes() {
-        return this.#listaNegociacoes;
     }
 
     adiciona(event) {
@@ -49,7 +36,7 @@ class NegociacaoController {
         this.#limpaCampos();
     }
 
-    apaga() {
+    apagaLista() {
         this.#listaNegociacoes.esvazia();
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
     }
