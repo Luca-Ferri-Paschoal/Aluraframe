@@ -17,22 +17,17 @@ class NegociacaoController {
         this.#negociacoesView = new NegociacoesView(pega('#negociacoesView'));
         this.#mensagemView = new MensagemView(pega('#mensagemView'));
 
-        
-        this.#listaNegociacoes = ProxyFactory.create(
+        this.#listaNegociacoes = new Bind(
             new ListaNegociacoes(),
+            this.#negociacoesView,
             ['adiciona', 'esvazia'],
-            model => this.#negociacoesView.update(model),
-        );
-
+        )
         
-        this.#mensagem = ProxyFactory.create(
+        this.#mensagem = new Bind(
             new Mensagem(),
+            this.#mensagemView,
             ['texto'],
-            model => this.#mensagemView.update(model),
         );
-
-        this.#negociacoesView.update(this.#listaNegociacoes);
-        this.#mensagemView.update(this.#mensagem);
     }
 
     get negociacoesView() {
