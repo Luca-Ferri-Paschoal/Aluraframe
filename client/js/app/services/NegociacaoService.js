@@ -1,32 +1,41 @@
 class NegociacaoService {
-    static obterNegociacoesDaSemana(cb) {
-        const xhr = new XMLHttpRequest();
+    #http;
 
-        xhr.open('GET', 'negociacoes/semana');
+    constructor() {
+        this.#http = new HTTPService();
+    }
 
-        xhr.onreadystatechange = () => { 
+    obterNegociacoesDaSemana(semanaEscolida = 'semana') {
 
-            if(xhr.readyState === 4) {
-                if(xhr.status === 200) {
+        return this.#http.get(`negociacoes/${semanaEscolida}`)
+        .then(objetos =>
+            this.#transformaObjetosEmNegociacoes(objetos)
+        )
+        .catch(erro => {
+            console.log(erro);
+            throw new Error(`Não foi posível obter as negociações da semana${semanaEscolida === 'semana'? '' : ' ' + semanaEscolida}.`);
+        });
+        
+    }
 
-                    const listaDeNegociacoesRecebidas = JSON.parse(xhr.responseText).map(objeto => 
-                        new Negociacao(
-                            new Date(objeto.data),
-                            objeto.quantidade,
-                            objeto.valor,
-                        )
-                    );
+    obterNegociacoes() {
+        return Promise.all([
+            this.obterNegociacoesDaSemana('retrasada'),
+            this.obterNegociacoesDaSemana('anterior'),
+            this.obterNegociacoesDaSemana(),
+        ])
+        .then(negociacoes => 
+            negociacoes.reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])
+        );;
+    }
 
-                    cb(null, listaDeNegociacoesRecebidas);
-                    
-                } else {
-                    console.log(xhr.responseText);
-                    cb('Não foi possível obter as negociações.', null);
-                }
-            }
-
-        }
-
-        xhr.send();
+    #transformaObjetosEmNegociacoes(arrayDeObjeto) {
+        return arrayDeObjeto.map(objeto =>
+            new Negociacao(
+                new Date(objeto.data),
+                objeto.quantidade,
+                objeto.valor
+            )
+        );
     }
 }
