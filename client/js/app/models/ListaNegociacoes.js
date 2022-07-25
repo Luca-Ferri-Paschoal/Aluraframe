@@ -28,13 +28,13 @@ class ListaNegociacoes {
         const loops = this.#negociacoes.length;
 
         for (let i = 0; i < loops; i++) {
-            const menorValor = this.#encontraMenorValor(valoresDoCriterio);
-            const indexMenorValor = valoresDoCriterio.indexOf(menorValor);
+            const maiorValor = this.#encontraMaiorValor(valoresDoCriterio);
+            const indexMaiorValor = valoresDoCriterio.indexOf(maiorValor);
 
-            listaOrdenada.push(this.#negociacoes[indexMenorValor]);
+            listaOrdenada.push(this.#negociacoes[indexMaiorValor]);
 
-            this.#negociacoes.splice(indexMenorValor, 1);
-            valoresDoCriterio.splice(indexMenorValor, 1);
+            this.#negociacoes.splice(indexMaiorValor, 1);
+            valoresDoCriterio.splice(indexMaiorValor, 1);
         }
 
         if (this.#inverterLista(criterio)) {
@@ -44,13 +44,13 @@ class ListaNegociacoes {
         this.#negociacoes = listaOrdenada;
     }
 
-    #encontraMenorValor(valores) {
-        let menorValor = Infinity;
+    #encontraMaiorValor(valores) {
+        let maiorValor = -Infinity;
         valores.forEach(valor => {
-            if (valor < menorValor) menorValor = valor;
+            if (valor > maiorValor) maiorValor = valor;
         });
 
-        return menorValor;
+        return maiorValor;
     }
 
     #inverterLista(criterio) {
