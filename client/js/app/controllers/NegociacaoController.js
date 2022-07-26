@@ -15,7 +15,7 @@ class NegociacaoController {
         this.#listaNegociacoes = new Bind(
             new ListaNegociacoes(),
             new NegociacoesView(pega('#negociacoesView')),
-            'adiciona', 'esvazia',
+            'adiciona', 'esvazia', 'ordenaPor',
         )
 
         this.#mensagem = new Bind(
@@ -53,6 +53,10 @@ class NegociacaoController {
     apagaLista() {
         this.#listaNegociacoes.esvazia();
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
+    }
+
+    ordenaLista(criterio) {
+        this.#listaNegociacoes.ordenaPor(criterio);
     }
 
     #criaNegociacao() {

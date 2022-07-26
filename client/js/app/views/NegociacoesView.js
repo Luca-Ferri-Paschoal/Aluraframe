@@ -9,20 +9,20 @@ class NegociacoesView extends View {
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
-                    <th>DATA</th>
-                    <th>QUANTIDADE</th>
-                    <th>VALOR</th>
-                    <th>VOLUME</th>
+                    <th onclick="negociacaoController.ordenaLista('data')">DATA</th>
+                    <th onclick="negociacaoController.ordenaLista('quantidade')">QUANTIDADE</th>
+                    <th onclick="negociacaoController.ordenaLista('valor')">VALOR</th>
+                    <th onclick="negociacaoController.ordenaLista('volume')">VOLUME</th>
                 </tr>
             </thead>
 
             <tbody>
                 ${model.negociacoes.map(item => `
                     <tr>
-                        <td>${DateHelper.dataParaTexto(item.data)}</td>
-                        <td>${item.quantidade}</td>
-                        <td>${item.valor}</td>
-                        <td>${item.volume}</td>
+                        <td onclick="negociacaoController.ordenaLista('data')">${DateHelper.dataParaTexto(item.data)}</td>
+                        <td onclick="negociacaoController.ordenaLista('quantidade')">${item.quantidade}</td>
+                        <td onclick="negociacaoController.ordenaLista('valor')">${item.valor}</td>
+                        <td onclick="negociacaoController.ordenaLista('volume')">${item.volume}</td>
                     </tr>
                 `).join('')}
             </tbody>
