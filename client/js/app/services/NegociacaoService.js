@@ -5,7 +5,7 @@ class NegociacaoService {
         this.#http = new HTTPService();
     }
 
-    obterNegociacoesDaSemana(semanaEscolida = 'semana') {
+    obterNegociacoesDaSemana(semanaEscolida) {
 
         return this.#http.get(`negociacoes/${semanaEscolida}`)
         .then(objetos =>
@@ -13,7 +13,7 @@ class NegociacaoService {
         )
         .catch(erro => {
             console.log(erro);
-            throw new Error(`Não foi posível obter as negociações da semana${semanaEscolida === 'semana'? '' : ' ' + semanaEscolida}.`);
+            throw new Error(`Não foi possível obter as negociações da semana ${semanaEscolida}.`);
         });
         
     }
@@ -22,7 +22,7 @@ class NegociacaoService {
         return Promise.all([
             this.obterNegociacoesDaSemana('retrasada'),
             this.obterNegociacoesDaSemana('anterior'),
-            this.obterNegociacoesDaSemana(),
+            this.obterNegociacoesDaSemana('atual'),
         ])
         .then(negociacoes => 
             negociacoes.reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])

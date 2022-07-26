@@ -4,7 +4,7 @@ var api = require('../api');
 
 module.exports  = function(app) {
     
-    app.route('/negociacoes/semana')
+    app.route('/negociacoes/atual')
         .get(api.listaSemana);
         
     app.route('/negociacoes/anterior')
