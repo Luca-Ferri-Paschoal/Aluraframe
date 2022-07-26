@@ -1,6 +1,5 @@
 class ListaNegociacoes {
     #negociacoes;
-    static #salvaChamada = null;
 
     constructor() {
         this.#negociacoes = [];
@@ -22,22 +21,22 @@ class ListaNegociacoes {
         this.#negociacoes = [];
     }
 
-    ordenaPor(criterio) {
-        const valoresDoCriterio = this.#negociacoes.map(negociacao => negociacao[criterio]);
+    ordenaPor(coluna, criterio) {
+        const valoresDaColuna = this.#negociacoes.map(negociacao => negociacao[coluna]);
         const listaOrdenada = [];
         const loops = this.#negociacoes.length;
 
         for (let i = 0; i < loops; i++) {
-            const maiorValor = this.#encontraMaiorValor(valoresDoCriterio);
-            const indexMaiorValor = valoresDoCriterio.indexOf(maiorValor);
+            const maiorValor = this.#encontraMaiorValor(valoresDaColuna);
+            const indexMaiorValor = valoresDaColuna.indexOf(maiorValor);
 
             listaOrdenada.push(this.#negociacoes[indexMaiorValor]);
 
             this.#negociacoes.splice(indexMaiorValor, 1);
-            valoresDoCriterio.splice(indexMaiorValor, 1);
+            valoresDaColuna.splice(indexMaiorValor, 1);
         }
 
-        if (this.#inverterLista(criterio)) {
+        if (criterio === 'descrescente') {
             listaOrdenada.reverse();
         }
 
@@ -51,21 +50,6 @@ class ListaNegociacoes {
         });
 
         return maiorValor;
-    }
-
-    #inverterLista(criterio) {
-        const chamadaAnterior = ListaNegociacoes.#salvaChamada;
-        ListaNegociacoes.#salvaChamada = criterio;
-        const chamadaAtual = ListaNegociacoes.#salvaChamada;
-
-        return function () {
-            if (chamadaAnterior === chamadaAtual) {
-                ListaNegociacoes.#salvaChamada = null;
-                return true;
-            } else {
-                return false;
-            }
-        }();
     }
 
 }

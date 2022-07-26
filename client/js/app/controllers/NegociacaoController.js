@@ -4,6 +4,7 @@ class NegociacaoController {
     #inputValor;
     #listaNegociacoes;
     #mensagem;
+    #colunaAnterior;
 
     constructor() {
         const pega = document.querySelector.bind(document);
@@ -23,6 +24,8 @@ class NegociacaoController {
             new MensagemView(pega('#mensagemView')),
             'texto',
         );
+
+        this.#colunaAnterior = null;
     }
 
     adiciona(event) {
@@ -55,8 +58,18 @@ class NegociacaoController {
         this.#mensagem.texto = 'Negociações apagadas com sucesso';
     }
 
-    ordenaLista(criterio) {
-        this.#listaNegociacoes.ordenaPor(criterio);
+    ordenaLista(coluna) {  
+        let criterio;
+
+        if (this.#colunaAnterior === coluna) {
+            this.#colunaAnterior = null;
+            criterio = 'descrescente';
+        } else {
+            this.#colunaAnterior = coluna;
+            criterio = 'crescente';
+        }
+
+        this.#listaNegociacoes.ordenaPor(coluna, criterio);
     }
 
     #criaNegociacao() {
