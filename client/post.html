@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <title>Negociacao</title>
+</head>
+
+<body class="container">
+    <form class="form" onsubmit="sendPost(event)">
+
+        <div class="form-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" class="form-control" required autofocus />
+        </div>
+
+        <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" min="1" step="1" id="quantidade" class="form-control" value="1" required />
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input id="valor" type="number" class="form-control" min="0.01" step="0.01" value="0.0" required />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Enviar dados para servidor</button>
+    </form>
+
+    <script src="./js/app/services/HTTPService.js"></script>
+
+    <script>
+
+        function sendPost(event) {
+
+            event.preventDefault();
+            console.log('Enviando post.');
+
+            const inputData = document.querySelector('#data');
+            const inputQuantidade = document.querySelector('#quantidade');
+            const inputValor = document.querySelector('#valor');
+
+            const dado = {
+                data: inputData.value,
+                quantidade: inputQuantidade.value,
+                valor: inputValor.value,
+            }
+
+            new HTTPService()
+            .post('/negociacoes', dado)
+            .then(() => {
+                inputData.value = '';
+                inputQuantidade.value = 1;
+                inputValor.value = 0.0;
+                console.log('Deu certo!')
+            })
+            .catch((erro) => {
+                aletr(`Não foi possível enviar negociação. ${erro}`);
+
+            });
+        }
+
+    </script>
+</body>
+
+</html>
