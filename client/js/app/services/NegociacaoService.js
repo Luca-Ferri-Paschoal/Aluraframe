@@ -4,6 +4,7 @@ class NegociacaoService {
     constructor() {
         this.#http = new HTTPService();
     }
+<<<<<<< HEAD
 
     obterNegociacoesDaSemana(semanaEscolida = 'semana') {
 
@@ -38,4 +39,6 @@ class NegociacaoService {
             )
         );
     }
+=======
+>>>>>>> post
 }
