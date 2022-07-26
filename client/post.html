@@ -31,6 +31,8 @@
         <button class="btn btn-primary" type="submit">Enviar dados para servidor</button>
     </form>
 
+    <script src="./js/app/services/HTTPService.js"></script>
+
     <script>
 
         function sendPost(event) {
@@ -38,29 +40,28 @@
             event.preventDefault();
             console.log('Enviando post.');
 
+            const inputData = document.querySelector('#data');
+            const inputQuantidade = document.querySelector('#quantidade');
+            const inputValor = document.querySelector('#valor');
 
-            const xhr = new XMLHttpRequest();
-
-            xhr.open('POST', '/negociacoes', true);
-            xhr.setRequestHeader('Content-type', 'application/json');
-
-            const inputData = document.querySelector('#data').value;
-            const inputQuantidade = document.querySelector('#quantidade').value;
-            const inputValor = document.querySelector('#valor').value;
-
-            const body = {
-                data: inputData,
-                quantidade: inputQuantidade,
-                valor: inputValor,
+            const dado = {
+                data: inputData.value,
+                quantidade: inputQuantidade.value,
+                valor: inputValor.value,
             }
 
-            const json = JSON.stringify(body);
+            new HTTPService()
+            .post('/negociacoes', dado)
+            .then(() => {
+                inputData.value = '';
+                inputQuantidade.value = 1;
+                inputValor.value = 0.0;
+                console.log('Deu certo!')
+            })
+            .catch((erro) => {
+                aletr(`Não foi possível enviar negociação. ${erro}`);
 
-            xhr.send(json);
-
-            xhr.onload = () => {
-                console.log('Deu tudo certo.');
-            }
+            });
         }
 
     </script>
