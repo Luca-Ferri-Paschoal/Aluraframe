@@ -2,7 +2,7 @@ class Negociacao {
     #data;
     #quantidade;
     #valor;
-    #volume
+    #volume;
 
     constructor(data, quantidade, valor) {
         this.#data = new Date(data.getTime());
