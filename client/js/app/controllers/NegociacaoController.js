@@ -25,9 +25,8 @@ class NegociacaoController {
             'texto',
         );
 
-<<<<<<< HEAD
         this.#colunaAnterior = null;
-=======
+
         ConnectionFactory
         .getConnection()
         .then(connection => new NegociacaoDao(connection))
@@ -38,7 +37,6 @@ class NegociacaoController {
             )
         )
         .catch(erro => this.#mensagem.texto = erro);
->>>>>>> adicionandoFuncionalidades
     }
 
     adiciona(event) {
@@ -89,7 +87,7 @@ class NegociacaoController {
     }
 
     ordenaLista(coluna) {  
-        let criterio;
+        let criterio = null;
 
         if (this.#colunaAnterior === coluna) {
             this.#colunaAnterior = null;
