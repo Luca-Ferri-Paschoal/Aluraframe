@@ -16,13 +16,24 @@ class NegociacaoController {
             new ListaNegociacoes(),
             new NegociacoesView(pega('#negociacoesView')),
             'adiciona', 'esvazia', 'ordenaPor',
-        )
+        );
 
         this.#mensagem = new Bind(
             new Mensagem(),
             new MensagemView(pega('#mensagemView')),
             'texto',
         );
+
+        ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.listaTodos())
+        .then(listaNegociacoes =>
+            listaNegociacoes.forEach(negociacao => 
+                this.#listaNegociacoes.adiciona(negociacao)
+            )
+        )
+        .catch(erro => this.#mensagem.texto = erro);
     }
 
     adiciona(event) {
