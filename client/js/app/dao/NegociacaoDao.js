@@ -1,10 +1,15 @@
 class NegociacaoDao {
     #connectoin
     #store;
+    #objectStore;
 
     constructor(connection) {
         this.#connectoin = connection;
         this.#store = 'negociacoes';
+
+        this.#objectStore = this.#connectoin
+        .transaction([this.#store], 'readwrite')
+        .objectStore(this.#store);
     }
 
     adiciona(model) {
@@ -16,13 +21,10 @@ class NegociacaoDao {
 
         return new Promise((resolve, reject) => {
 
-            const request = this.#connectoin
-            .transaction([this.#store], 'readwrite')
-            .objectStore(this.#store)
-            .add(negociacao);
+            const request = this.#objectStore.add(negociacao);
 
             request.onsuccess = event => {
-                resolve();
+                resolve('Negociação adcionada com sucesso.');
             };
 
             request.onerror = event => {
@@ -34,10 +36,7 @@ class NegociacaoDao {
 
     listaTodos() {
         return new Promise((resolve, reject) => {
-            const cursor = this.#connectoin
-            .transaction([this.#store], 'readwrite')
-            .objectStore(this.#store)
-            .openCursor();
+            const cursor = this.#objectStore.openCursor();
 
             const listaNegociacoes = [];
 
@@ -58,6 +57,21 @@ class NegociacaoDao {
             cursor.onerror = event => {
                 console.log(event.target.error);
                 reject('Não foi possível listar as negociações.');
+            };
+        })
+    }
+
+    apagaTodos() {
+        return new Promise((resolve, reject) => {
+            const request = this.#objectStore.clear();
+
+            request.onsuccess = event => {
+                resolve('Negociações apagadas com sucesso.');
+            };
+
+            request.onerror = event => {
+                console.log(event.target.error);
+                reject('Não foi possível apagar as negociações');
             };
         })
     }
