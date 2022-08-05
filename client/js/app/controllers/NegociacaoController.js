@@ -17,7 +17,7 @@ class NegociacaoController {
             new ListaNegociacoes(),
             new NegociacoesView(pega('#negociacoesView')),
             'adiciona', 'esvazia', 'ordenaPor',
-        )
+        );
 
         this.#mensagem = new Bind(
             new Mensagem(),
@@ -25,20 +25,41 @@ class NegociacaoController {
             'texto',
         );
 
+<<<<<<< HEAD
         this.#colunaAnterior = null;
+=======
+        ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.listaTodos())
+        .then(listaNegociacoes =>
+            listaNegociacoes.forEach(negociacao => 
+                this.#listaNegociacoes.adiciona(negociacao)
+            )
+        )
+        .catch(erro => this.#mensagem.texto = erro);
+>>>>>>> adicionandoFuncionalidades
     }
 
     adiciona(event) {
+
         event.preventDefault();
 
-        try {
-            this.#listaNegociacoes.adiciona(this.#criaNegociacao());
-            this.#mensagem.texto = 'Negociação adcionada com sucesso.';
-    
-            this.#limpaCampos();
-        } catch(erro) {
-            this.#mensagem.texto = erro;
-        }
+        ConnectionFactory
+        .getConnection()
+        .then(connection => {
+            const negociacao = this.#criaNegociacao();
+            new NegociacaoDao(connection)
+            .adiciona(negociacao)
+            .then(mensagem => {
+                this.#listaNegociacoes.adiciona(negociacao);
+                this.#mensagem.texto = mensagem;
+        
+                this.#limpaCampos();
+            });
+        })
+        .catch(erro => this.#mensagem.texto = erro);
+
     }
 
     importaNegociacoes() {
@@ -56,8 +77,15 @@ class NegociacaoController {
     }
 
     apagaLista() {
-        this.#listaNegociacoes.esvazia();
-        this.#mensagem.texto = 'Negociações apagadas com sucesso';
+        ConnectionFactory
+        .getConnection()
+        .then(connection => new NegociacaoDao(connection))
+        .then(dao => dao.apagaTodos())
+        .then(mensagem => {
+            this.#listaNegociacoes.esvazia();
+            this.#mensagem.texto = mensagem;
+        })
+        .catch(erro => this.#mensagem.texto = erro);
     }
 
     ordenaLista(coluna) {  
@@ -77,8 +105,8 @@ class NegociacaoController {
     #criaNegociacao() {
         return new Negociacao(
             DateHelper.textoParaData(this.#inputData.value),
-            this.#inputQuantidade.value,
-            this.#inputValor.value,
+            parseInt(this.#inputQuantidade.value),
+            parseFloat(this.#inputValor.value),
         );
     }
 
