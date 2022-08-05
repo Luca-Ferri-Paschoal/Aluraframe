@@ -7,13 +7,19 @@ class NegociacaoDao {
         this.#store = 'negociacoes';
     }
 
-    adiciona(negociacoes) {
+    adiciona(model) {
+        const negociacao = {
+            data: model.data,
+            quantidade: model.quantidade,
+            valor: model.valor,
+        }
+
         return new Promise((resolve, reject) => {
 
             const request = this.#connectoin
             .transaction([this.#store], 'readwrite')
             .objectStore(this.#store)
-            .add(negociacoes);
+            .add(negociacao);
 
             request.onsuccess = event => {
                 resolve();
