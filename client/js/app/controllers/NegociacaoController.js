@@ -37,6 +37,11 @@ class NegociacaoController {
             )
         )
         .catch(erro => this.#mensagem.texto = erro);
+
+        setInterval(() => {
+            this.#importaNegociacoes();
+        }
+        , 3000);
     }
 
     adiciona(event) {
@@ -60,7 +65,7 @@ class NegociacaoController {
 
     }
 
-    importaNegociacoes() {
+    #importaNegociacoes() {
         const service = new NegociacaoService();
 
         service.obterNegociacoes()
