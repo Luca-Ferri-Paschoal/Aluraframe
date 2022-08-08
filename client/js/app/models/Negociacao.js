@@ -28,4 +28,12 @@ class Negociacao {
         return this.#volume;
     }
 
+    static atributos(negociacao) {
+        return {
+            data: negociacao.data,
+            quantidade: negociacao.quantidade,
+            valor: negociacao.valor,
+        }
+    }
+
 }
