@@ -69,12 +69,19 @@ class NegociacaoController {
         const service = new NegociacaoService();
 
         service.obterNegociacoes()
+        .then(negociacoes => 
+            negociacoes.filter(negociacao =>
+                !this.#listaNegociacoes.negociacoes.some(negociacaoExistente =>
+                    JSON.stringify(Negociacao.atributos(negociacao)) === JSON.stringify(Negociacao.atributos(negociacaoExistente))
+                )
+            )
+        )
         .then(negociacoes => {
             negociacoes
                 .forEach(negociacao => this.#listaNegociacoes.adiciona(negociacao)
             );
             
-            this.#mensagem.texto = 'Negociacões importadas com sucesso.'
+            this.#mensagem.texto = 'Negociacões importadas com sucesso.';
         })
         .catch(erro => this.#mensagem.texto = erro);
     }
