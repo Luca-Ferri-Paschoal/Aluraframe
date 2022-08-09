@@ -13,7 +13,7 @@ class NegociacaoDao {
             const request = this.#connectoin
             .transaction([this.#store], 'readwrite')
             .objectStore(this.#store)
-            .add(Negociacao.atributos(negociacao));
+            .add(negociacao.atributos);
 
             request.onsuccess = event => {
                 resolve('Negociação adcionada com sucesso.');

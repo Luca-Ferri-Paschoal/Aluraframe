@@ -28,11 +28,15 @@ class Negociacao {
         return this.#volume;
     }
 
-    static atributos(negociacao) {
+    isEquals(negociacaoExistente) {
+        return JSON.stringify(this) === JSON.stringify(negociacaoExistente);        
+    }
+
+    atributos() {
         return {
-            data: negociacao.data,
-            quantidade: negociacao.quantidade,
-            valor: negociacao.valor,
+            data: this.data,
+            quantidade: this.quantidade,
+            valor: this.valor,
         }
     }
 
