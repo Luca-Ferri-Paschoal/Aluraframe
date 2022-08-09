@@ -48,7 +48,7 @@
                 quantidade: inputQuantidade.value,
                 valor: inputValor.value,
             }
-
+            
             new HTTPService()
             .post('/negociacoes', dado)
             .then(() => {
@@ -58,7 +58,7 @@
                 console.log('Deu certo!')
             })
             .catch((erro) => {
-                aletr(`Não foi possível enviar negociação. ${erro}`);
+                alert(`Não foi possível enviar negociação. ${erro}`);
 
             });
         }
