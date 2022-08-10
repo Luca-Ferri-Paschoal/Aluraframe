@@ -1,4 +1,7 @@
-class NegociacoesView extends View {
+import { View } from './View.js';
+import { DateHelper } from './../helpers/DateHelper.js';
+
+export class NegociacoesView extends View {
 
     // constructor(elemento) {
     //     super(elemento);

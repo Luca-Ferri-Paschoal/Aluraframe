@@ -1,4 +1,4 @@
-class Negociacao {
+export class Negociacao {
     #data;
     #quantidade;
     #valor;
@@ -32,7 +32,7 @@ class Negociacao {
         return JSON.stringify(this) === JSON.stringify(negociacaoExistente);        
     }
 
-    atributos() {
+    get atributos() {
         return {
             data: this.data,
             quantidade: this.quantidade,

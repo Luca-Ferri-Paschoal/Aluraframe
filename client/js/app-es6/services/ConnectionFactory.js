@@ -1,4 +1,4 @@
-class ConnectionFactory {
+export class ConnectionFactory {
     static #stores = ['negociacoes'];
     static #version = 5;
     static #dbName = 'aluraframe';

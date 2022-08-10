@@ -1,4 +1,9 @@
-class NegociacaoService {
+import { HTTPService } from './HTTPService.js';
+import { ConnectionFactory } from './ConnectionFactory.js';
+import { NegociacaoDao } from './../dao/NegociacaoDao.js';
+import { Negociacao } from './../models/Negociacao.js';
+
+export class NegociacaoService {
     #http;
 
     constructor() {

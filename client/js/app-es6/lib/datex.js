@@ -1,4 +1,4 @@
-class DateHelper {
+export class DateHelper {
 
     dateToString(date) {
         /* faz algo */
