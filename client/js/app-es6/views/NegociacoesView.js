@@ -1,5 +1,6 @@
 import { View } from './View.js';
 import { DateHelper } from './../helpers/DateHelper.js';
+import { currentInstance } from './../controllers/NegociacaoController.js';
 
 export class NegociacoesView extends View {
 
@@ -7,25 +8,35 @@ export class NegociacoesView extends View {
     //     super(elemento);
     // }
 
+    constructor(elemento) {
+        super(elemento);
+
+        elemento.addEventListener('click', function(event) {
+            if (event.target.nodeName === 'TH') {
+                currentInstance().ordenaLista(event.target.textContent.toLowerCase());
+            }
+        })
+    }
+
     _template(model) {
         return `
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
-                    <th onclick="negociacaoController.ordenaLista('data')">DATA</th>
-                    <th onclick="negociacaoController.ordenaLista('quantidade')">QUANTIDADE</th>
-                    <th onclick="negociacaoController.ordenaLista('valor')">VALOR</th>
-                    <th onclick="negociacaoController.ordenaLista('volume')">VOLUME</th>
+                    <th>DATA</th>
+                    <th>QUANTIDADE</th>
+                    <th>VALOR</th>
+                    <th>VOLUME</th>
                 </tr>
             </thead>
 
             <tbody>
                 ${model.negociacoes.map(item => `
                     <tr>
-                        <td onclick="negociacaoController.ordenaLista('data')">${DateHelper.dataParaTexto(item.data)}</td>
-                        <td onclick="negociacaoController.ordenaLista('quantidade')">${item.quantidade}</td>
-                        <td onclick="negociacaoController.ordenaLista('valor')">${item.valor}</td>
-                        <td onclick="negociacaoController.ordenaLista('volume')">${item.volume}</td>
+                        <td>${DateHelper.dataParaTexto(item.data)}</td>
+                        <td>${item.quantidade}</td>
+                        <td>${item.valor}</td>
+                        <td>${item.volume}</td>
                     </tr>
                 `).join('')}
             </tbody>

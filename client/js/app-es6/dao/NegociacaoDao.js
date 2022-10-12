@@ -6,7 +6,7 @@ export class NegociacaoDao {
 
     constructor(connection) {
         this.#connectoin = connection;
-        this.#store = 'negociacoes';;
+        this.#store = 'negociacoes';
     }
 
     adiciona(negociacao) {

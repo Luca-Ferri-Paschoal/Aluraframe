@@ -7,7 +7,7 @@ import { NegociacaoService } from './../services/NegociacaoService.js';
 import { DateHelper } from './../helpers/DateHelper.js';
 import { Bind } from './../helpers/Bind.js';
 
-export class NegociacaoController {
+class NegociacaoController {
     #inputData;
     #inputQuantidade;
     #inputValor;
@@ -122,4 +122,10 @@ export class NegociacaoController {
 
         this.#inputData.focus();
     }
+}
+
+let negociacaoController = new NegociacaoController();
+
+export function currentInstance() {
+    return negociacaoController;
 }

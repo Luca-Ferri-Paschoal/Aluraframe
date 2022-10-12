@@ -3,7 +3,7 @@
 System.register(["./../models/Negociacao.js", "./../models/ListaNegociacoes.js", "./../models/Mensagem.js", "./../views/NegociacoesView.js", "./../views/MensagemView.js", "./../services/NegociacaoService.js", "./../helpers/DateHelper.js", "./../helpers/Bind.js"], function (_export, _context) {
   "use strict";
 
-  var Negociacao, ListaNegociacoes, Mensagem, NegociacoesView, MensagemView, NegociacaoService, DateHelper, Bind, _inputData, _inputQuantidade, _inputValor, _listaNegociacoes, _mensagem, _colunaAnterior, _service, _init, _importaNegociacoes, _criaNegociacao, _limpaCampos, NegociacaoController;
+  var Negociacao, ListaNegociacoes, Mensagem, NegociacoesView, MensagemView, NegociacaoService, DateHelper, Bind, _inputData, _inputQuantidade, _inputValor, _listaNegociacoes, _mensagem, _colunaAnterior, _service, _init, _importaNegociacoes, _criaNegociacao, _limpaCampos, NegociacaoController, negociacaoController;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -140,6 +140,12 @@ System.register(["./../models/Negociacao.js", "./../models/ListaNegociacoes.js",
     _classPrivateFieldGet(this, _inputData).focus();
   }
 
+  function currentInstance() {
+    return negociacaoController;
+  }
+
+  _export("currentInstance", currentInstance);
+
   return {
     setters: [function (_modelsNegociacaoJs) {
       Negociacao = _modelsNegociacaoJs.Negociacao;
@@ -171,7 +177,7 @@ System.register(["./../models/Negociacao.js", "./../models/ListaNegociacoes.js",
       _criaNegociacao = new WeakSet();
       _limpaCampos = new WeakSet();
 
-      _export("NegociacaoController", NegociacaoController = function () {
+      NegociacaoController = function () {
         function NegociacaoController() {
           _classCallCheck(this, NegociacaoController);
 
@@ -289,9 +295,9 @@ System.register(["./../models/Negociacao.js", "./../models/ListaNegociacoes.js",
         }]);
 
         return NegociacaoController;
-      }());
+      }();
 
-      _export("NegociacaoController", NegociacaoController);
+      negociacaoController = new NegociacaoController();
     }
   };
 });

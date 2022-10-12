@@ -3,13 +3,13 @@
 System.register(["./controllers/NegociacaoController.js"], function (_export, _context) {
   "use strict";
 
-  var NegociacaoController, negociacaoController;
+  var currentInstance, negociacaoController;
   return {
     setters: [function (_controllersNegociacaoControllerJs) {
-      NegociacaoController = _controllersNegociacaoControllerJs.NegociacaoController;
+      currentInstance = _controllersNegociacaoControllerJs.currentInstance;
     }],
     execute: function () {
-      negociacaoController = new NegociacaoController();
+      negociacaoController = currentInstance();
       document.querySelector('.form').onsubmit = negociacaoController.adiciona.bind(negociacaoController);
       document.querySelector('button[type=button]').onclick = negociacaoController.apagaLista.bind(negociacaoController);
     }

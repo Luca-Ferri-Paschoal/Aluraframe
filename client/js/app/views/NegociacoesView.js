@@ -1,9 +1,9 @@
 "use strict";
 
-System.register(["./View.js", "./../helpers/DateHelper.js"], function (_export, _context) {
+System.register(["./View.js", "./../helpers/DateHelper.js", "./../controllers/NegociacaoController.js"], function (_export, _context) {
   "use strict";
 
-  var View, DateHelper, NegociacoesView;
+  var View, DateHelper, currentInstance, NegociacoesView;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -118,6 +118,8 @@ System.register(["./View.js", "./../helpers/DateHelper.js"], function (_export, 
       View = _ViewJs.View;
     }, function (_helpersDateHelperJs) {
       DateHelper = _helpersDateHelperJs.DateHelper;
+    }, function (_controllersNegociacaoControllerJs) {
+      currentInstance = _controllersNegociacaoControllerJs.currentInstance;
     }],
     execute: function () {
       _export("NegociacoesView", NegociacoesView = function (_View) {
@@ -125,20 +127,28 @@ System.register(["./View.js", "./../helpers/DateHelper.js"], function (_export, 
 
         var _super = _createSuper(NegociacoesView);
 
-        function NegociacoesView() {
+        // constructor(elemento) {
+        //     super(elemento);
+        // }
+        function NegociacoesView(elemento) {
+          var _this;
+
           _classCallCheck(this, NegociacoesView);
 
-          return _super.apply(this, arguments);
+          _this = _super.call(this, elemento);
+          elemento.addEventListener('click', function (event) {
+            if (event.target.nodeName === 'TH') {
+              currentInstance().ordenaLista(event.target.textContent.toLowerCase());
+            }
+          });
+          return _this;
         }
 
         _createClass(NegociacoesView, [{
           key: "_template",
-          value: // constructor(elemento) {
-          //     super(elemento);
-          // }
-          function _template(model) {
-            return "\n        <table class=\"table table-hover table-bordered\">\n            <thead>\n                <tr>\n                    <th onclick=\"negociacaoController.ordenaLista('data')\">DATA</th>\n                    <th onclick=\"negociacaoController.ordenaLista('quantidade')\">QUANTIDADE</th>\n                    <th onclick=\"negociacaoController.ordenaLista('valor')\">VALOR</th>\n                    <th onclick=\"negociacaoController.ordenaLista('volume')\">VOLUME</th>\n                </tr>\n            </thead>\n\n            <tbody>\n                ".concat(model.negociacoes.map(function (item) {
-              return "\n                    <tr>\n                        <td onclick=\"negociacaoController.ordenaLista('data')\">".concat(DateHelper.dataParaTexto(item.data), "</td>\n                        <td onclick=\"negociacaoController.ordenaLista('quantidade')\">").concat(item.quantidade, "</td>\n                        <td onclick=\"negociacaoController.ordenaLista('valor')\">").concat(item.valor, "</td>\n                        <td onclick=\"negociacaoController.ordenaLista('volume')\">").concat(item.volume, "</td>\n                    </tr>\n                ");
+          value: function _template(model) {
+            return "\n        <table class=\"table table-hover table-bordered\">\n            <thead>\n                <tr>\n                    <th>DATA</th>\n                    <th>QUANTIDADE</th>\n                    <th>VALOR</th>\n                    <th>VOLUME</th>\n                </tr>\n            </thead>\n\n            <tbody>\n                ".concat(model.negociacoes.map(function (item) {
+              return "\n                    <tr>\n                        <td>".concat(DateHelper.dataParaTexto(item.data), "</td>\n                        <td>").concat(item.quantidade, "</td>\n                        <td>").concat(item.valor, "</td>\n                        <td>").concat(item.volume, "</td>\n                    </tr>\n                ");
             }).join(''), "\n            </tbody>\n\n            <tfoot>\n                <td colspan=\"3\"></td>\n                <td>\n                    ").concat(model.volumeTotal, "\n                </td>\n            </tfoot>\n        </table>\n        ");
           }
         }]);
